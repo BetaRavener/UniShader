@@ -1,8 +1,0 @@
-// Namespace macros
-#define UNISHADER_NAMESPACE namespace us
-#define UNISHADER_BEGIN UNISHADER_NAMESPACE{
-#define UNISHADER_END }
-
-// Function success/failure returns
-#define SUCCESS true
-#define FAILURE false
