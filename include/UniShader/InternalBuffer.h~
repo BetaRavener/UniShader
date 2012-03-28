@@ -1,0 +1,46 @@
+#pragma once
+#ifndef INTERNAL_BUFFER_H
+#define INTERNAL_BUFFER_H
+
+#include <UniShader/Config.h>
+#include <UniShader/Utility.h>
+#include <UniShader/ObjectBase.h>
+#include <UniShader/Buffer.h>
+
+UNISHADER_BEGIN
+
+//! Internal buffer class.
+/*!
+	Internal buffer class is inner class used by interface.
+*/
+
+class InternalBuffer : public BufferBase{
+private:
+	InternalBuffer();
+public:
+	virtual const std::string& getClassName() const; //!< Get name of this class
+
+	~InternalBuffer();
+
+	//! Create internal buffer.
+	/*!
+		\return Internal buffer.
+	*/
+	static Ptr create();
+
+	//! Get size.
+	/*!
+		\return Size of buffer in bytes.
+	*/
+	size_t getSize() const;
+
+	//! Resize buffer to new size.
+	/*!
+		\param size New size of buffer in bytes.
+	*/
+	void resize(size_t size);
+};
+
+UNISHADER_END
+
+#endif

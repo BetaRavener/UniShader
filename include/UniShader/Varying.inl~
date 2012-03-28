@@ -1,0 +1,15 @@
+#include <UniShader/Utility.h>
+#include <UniShader/ShaderOutput.h>
+
+UNISHADER_BEGIN
+
+template <typename T>
+typename std::shared_ptr< const Buffer<T> > Varying::getBuffer(){
+	if(m_output.isInterleaved())
+		return m_output.getInterleavedBuffer<T>();
+	else{
+		return std::static_pointer_cast<const Buffer<T>>(m_buffer);
+	}
+}
+
+UNISHADER_END

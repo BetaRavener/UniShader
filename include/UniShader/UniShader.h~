@@ -1,0 +1,59 @@
+#pragma once
+#ifndef UNISHADER_H
+#define UNISHADER_H
+
+//Include whole API
+#include <UniShader/Config.h>
+#include <UniShader/Utility.h>
+#include <UniShader/ShaderObject.h>
+#include <UniShader/ShaderProgram.h>
+#include <UniShader/ShaderInput.h>
+#include <UniShader/ShaderOutput.h>
+#include <UniShader/Buffer.h>
+#include <UniShader/Attribute.h>
+#include <UniShader/Uniform.h>
+#include <UniShader/Varying.h>
+#include <UniShader/TextureBuffer.h>
+#include <UniShader/PrimitiveType.h>
+
+#include <memory>
+#include <string>
+
+UNISHADER_BEGIN
+
+//! UniShader class.
+/*!
+	UniShader is renderer class that utilizes OpenGL and ShaderProgram to
+	render geometry.
+*/
+
+class UniShader_API UniShader{
+public:
+	UniShader();
+	~UniShader();
+
+	//! Connect program.
+	/*!
+		\param program Shader program used for rendering.
+	*/
+	void connectProgram(std::shared_ptr<ShaderProgram>& program);
+
+	//! Disconnect program.
+	void disconnectProgram();
+
+	//! Render.
+	/*!
+		Render with OpenGL using ShaderProgram.
+		\param primitiveType Primitive type that will be rendered.
+		\param primitiveCount Number of primitives that will be rendered.
+		\param offset Global offset for all inputs.
+		\param wait If true, function won't return until all OpenGL commands haven't been processed.
+	*/
+	void render(PrimitiveType primitiveType, unsigned int primitiveCount, unsigned int offset = 0, bool wait = false);
+private:
+	ShaderProgram::Ptr m_program;
+};
+
+UNISHADER_END
+
+#endif

@@ -1,0 +1,29 @@
+#include <UniShader/InternalBuffer.h>
+
+using UNISHADER_NAMESPACE;
+
+InternalBuffer::InternalBuffer(){
+
+}
+
+const std::string& InternalBuffer::getClassName() const{
+	static const std::string name("us::InternalBuffer");
+	return name;
+}
+
+InternalBuffer::~InternalBuffer(){
+
+}
+
+InternalBuffer::Ptr InternalBuffer::create(){
+	Ptr ptr(new InternalBuffer);
+	return ptr;
+}
+
+size_t InternalBuffer::getSize() const{
+	return m_byteSize;
+}
+
+void InternalBuffer::resize(size_t size){
+	setPlainData(0,size);
+}

@@ -1,0 +1,19 @@
+#pragma once
+#ifndef DATA_TYPE_RESOLVER_H
+#define DATA_TYPE_RESOLVER_H
+
+#include <UniShader/Config.h>
+#include <UniShader/Utility.h>
+#include <UniShader/OpenGL.h>
+#include <UniShader/GLSLType.h>
+
+UNISHADER_BEGIN
+
+class TypeResolver{
+public:
+	static bool resolve(GLenum typeEnum, GLSLType& type);
+};
+
+UNISHADER_END
+
+#endif
