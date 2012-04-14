@@ -1,8 +1,8 @@
 
-							UniShader library
-			Interface for GPGPU and working with shader programs
-						  (c) Ivan Sevcik, 2012
-				zlib/libpng license (see LICENSE for details)
+                            UniShader library
+             Interface for GPGPU and working with shader programs
+                          (c) Ivan Sevcik, 2012
+                zlib/libpng license (see LICENSE for details)
 
 IMPORTANT: This library is under heavy development and is not guaranteed to run 
 on your system. However, you are encouraged to report any unexpected behaviour 
@@ -11,36 +11,36 @@ to forums located at the website.
 1. INSTALLING
 
 Dependencies:
-  -	GLEW (http://glew.sourceforge.net/)
-	GLEW is a cross-platform extension loading library.
-	
+ - GLEW (http://glew.sourceforge.net/)
+   GLEW is a cross-platform extension loading library.
+
 Build system:
-  -	cmake (http://cmake.org/)
-	Cmake is a cross-platform project generator.
+ - cmake (http://cmake.org/)
+   Cmake is a cross-platform project generator.
 
 Installation steps:
-	1. 	Create folder for library (further refered as FOLDER).
-	2. 	Use Cmake to generate project file. 
-		In case Cmake can't find GLEW, specify the path to it manually.
-		(Linux) Navigate to FOLDER and use cmake -i ./ to configure make file.
-	3. 	Compile project file.
-		(Linux) Use sudo make install to install library to system.
+  1. Create folder for library (further refered as FOLDER).
+  2. Use Cmake to generate project file. 
+     In case Cmake can't find GLEW, specify the path to it manually.
+     (Linux) Navigate to FOLDER and use cmake -i ./ to configure make file.
+  3. Compile project file.
+     (Linux) Use sudo make install to install library to system.
 
 
 2. USAGE
 
 Including:
-	1.	Set FOLDER/include as Include directory in your project.
-	2.	Include whole library with #include <UniShader/UniShader.h>
+  1. Set FOLDER/include as Include directory in your project.
+  2. Include whole library with #include <UniShader/UniShader.h>
 
 Linking:
-	Dynamic libraries:
-	1. 	(Windows) Use unishader.lib in FOLDER/lib/ as input for linker.
-		(Linux)	Use libunishader.so in /usr/local/lib/ as input for linker.
-	
+ Dynamic libraries:
+  1. (Windows) Use unishader.lib in FOLDER/lib/ as input for linker.
+     (Linux)   Use libunishader.so in /usr/local/lib/ as input for linker.
+
 Running:
-	1.	(Windows) Place unishader.dll to folder whit executable of your project.
-		(Linux) If library was installed, executable will find it automatically.
+  1. (Windows) Place unishader.dll to folder whit executable of your project.
+     (Linux)   If library was installed, executable will find it automatically.
 
 
 3. DOCUMENTATION
