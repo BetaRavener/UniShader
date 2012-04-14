@@ -77,6 +77,7 @@ void Uniform::clearSource(){
 	else if(m_textureBuffer){
 		m_textureBuffer = 0;
 	}
+	m_prepared = false;
 }
 
 void Uniform::setSource(float* arr, unsigned int size){
@@ -84,6 +85,15 @@ void Uniform::setSource(float* arr, unsigned int size){
 	m_dataByteSize = size*sizeof(float);
 	m_plainData = (char*)new float[size];
 	memcpy(m_plainData, &arr[0], m_dataByteSize);
+	m_prepared = false;
+}
+
+void Uniform::setSource(int* arr, unsigned int size){
+	clearSource();
+	m_dataByteSize = size*sizeof(int);
+	m_plainData = (char*)new int[size];
+	memcpy(m_plainData, &arr[0], m_dataByteSize);
+	m_prepared = false;
 }
 
 void Uniform::setSource(std::vector<float> vec){
@@ -92,11 +102,22 @@ void Uniform::setSource(std::vector<float> vec){
 	m_dataByteSize = size*sizeof(float);
 	m_plainData = (char*)new float[size];
 	memcpy(m_plainData, &vec[0], m_dataByteSize);
+	m_prepared = false;
+}
+
+void Uniform::setSource(std::vector<int> vec){
+	clearSource();
+	unsigned int size = vec.size();
+	m_dataByteSize = size*sizeof(int);
+	m_plainData = (char*)new int[size];
+	memcpy(m_plainData, &vec[0], m_dataByteSize);
+	m_prepared = false;
 }
 
 void Uniform::setSource(TextureBuffer::Ptr& textureBuffer){
 	clearSource();
 	m_textureBuffer = textureBuffer;
+	m_prepared = false;
 }
 
 const GLSLType& Uniform::getGLSLType() const{

@@ -100,11 +100,11 @@ public:
 	//! Connect buffer to attribute and set it as data source.
 	/*!
 		\param buffer Buffer.
-		\param offset Offset of first index.
-		\param stride Stride between used indices.
+		\param offset Offset of first element in bytes.
+		\param stride Stride between used elements in bytes.
 		\sa disconnectBuffer().
 	*/
-	void connectBuffer(std::shared_ptr<BufferBase> buffer, unsigned int offset = 0, unsigned int stride = 0);
+	void connectBuffer(std::shared_ptr<BufferBase> buffer, size_t offset = 0, size_t stride = 0);
 
 	//! Disconnect buffer from attribute.
 	/*!
@@ -123,13 +123,13 @@ public:
 	/*!
 		\return Buffer offset.
 	*/
-	unsigned int getBufferOffset() const;
+	size_t getBufferOffset() const;
 
 	//! Get buffer stride.
 	/*!
 		\return Buffer stride.
 	*/
-	unsigned int getBufferStride() const;
+	size_t getBufferStride() const;
 
 	//! Get GLSL type.
 	/*!
@@ -151,15 +151,15 @@ public:
 	
 	//! Set buffer offset.
 	/*!
-		\param offset Offset of first index.
+		\param offset Offset of first index in bytes.
 	*/
-	void setBufferOffset(unsigned int offset);
+	void setBufferOffset(size_t offset);
 
 	//! Set buffer stride.
 	/*!
-		\param stride Stride between used indices.
+		\param stride Stride between used elements in bytes.
 	*/
-	void setBufferStride(unsigned int stride);
+	void setBufferStride(size_t stride);
 
 	//! Set reading mode.
 	/*!
@@ -192,9 +192,9 @@ private:
 	std::shared_ptr<BufferBase> m_buffer;
 	GLSLType m_type;
 	std::string m_name;
+	size_t m_offset;
+	size_t m_stride;
 	int m_location;
-	unsigned int m_offset;
-	unsigned int m_stride;
 	ReadingMode m_readingMode;
 	bool m_normalize;
 	bool m_prepared;

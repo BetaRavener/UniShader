@@ -102,9 +102,22 @@ public:
 
 	//! Set source of data.
 	/*!
+		\param arr Array with data.
+		\param size Size of array in elements.
+	*/
+	void setSource(int* arr, unsigned int size);
+
+	//! Set source of data.
+	/*!
 		\param vec Vector with data.
 	*/
 	void setSource(std::vector<float> vec);
+
+	//! Set source of data.
+	/*!
+		\param vec Vector with data.
+	*/
+	void setSource(std::vector<int> vec);
 
 	//! Set source of data.
 	/*!

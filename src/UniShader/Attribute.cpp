@@ -35,9 +35,9 @@ Attribute::Attribute(ShaderProgram& program, std::string name):
 m_program(program),
 m_buffer(0),
 m_name(name),
-m_location(-1),
 m_offset(0),
 m_stride(0),
+m_location(-1),
 m_readingMode(ReadingMode::NONE),
 m_normalize(false),
 m_prepared(false){
@@ -53,7 +53,7 @@ Attribute::~Attribute(){
 	m_program.unsubscribeReceiver(signalPtr);
 }
 
-void Attribute::connectBuffer(BufferBase::Ptr buffer, unsigned int offset, unsigned int stride){
+void Attribute::connectBuffer(BufferBase::Ptr buffer, size_t offset, size_t stride){
 	m_buffer = buffer;
 	m_offset = offset;
 	m_stride = stride;
@@ -73,11 +73,11 @@ void Attribute::normalize(bool norm){
 	sendSignal(SignalID::CHANGED, this);
 }
 
-unsigned int Attribute::getBufferOffset() const{
+size_t Attribute::getBufferOffset() const{
 	return m_offset;
 }
 
-unsigned int Attribute::getBufferStride() const{
+size_t Attribute::getBufferStride() const{
 	return m_stride;
 }
 
@@ -94,12 +94,12 @@ std::string Attribute::getName() const{
 	return m_name;
 }
 
-void Attribute::setBufferOffset(unsigned int offset){
+void Attribute::setBufferOffset(size_t offset){
 	m_offset = offset;
 	sendSignal(SignalID::CHANGED, this);
 }
 
-void Attribute::setBufferStride(unsigned int stride){
+void Attribute::setBufferStride(size_t stride){
 	m_stride = stride;
 	sendSignal(SignalID::CHANGED, this);
 }
@@ -212,12 +212,12 @@ void Attribute::apply(){
 		return;
 	}
 
-	size_t stride = (m_stride + m_type.getColumnSize() * m_type.getColumnCount()) * elemSize;
+	size_t stride = m_type.getColumnSize() * m_type.getColumnCount() * elemSize + m_stride;
 
 	for(int i = 0; i < m_type.getColumnCount(); i++){
 		glEnableVertexAttribArray(m_location+i);
 		glBindBuffer(GL_ARRAY_BUFFER, m_buffer->getGlID());
-		size_t offset = (m_offset + i*m_type.getColumnSize()) * elemSize;
+		size_t offset = i*m_type.getColumnSize() * elemSize + m_offset;
 
 		switch(m_type.getDataType()){
 		case GLSLType::DataType::FLOAT:

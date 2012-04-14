@@ -61,7 +61,7 @@ TextureBuffer::Ptr TextureBuffer::create(){
 	clearGLErrors();
 
 	Ptr ptr(new TextureBuffer);
-	if((ptr->m_texture = 0))
+	if((ptr->m_texture == 0))
 		return 0;
 
 	ptr->m_unit.lock();
@@ -72,10 +72,12 @@ TextureBuffer::Ptr TextureBuffer::create(){
 	//first bind is used to specialize texture
 	glBindTexture(GL_TEXTURE_BUFFER, ptr->m_texture);
 	glBindTexture(GL_TEXTURE_BUFFER, 0);
-	if(printGLError()){
-		ptr->m_unit.release();
+
+	//TODO: Unexpected texture problems may be caused by this
+	ptr->m_unit.release();
+
+	if(printGLError())
 		return 0;
-	}
 
 	return ptr;
 }
@@ -263,10 +265,16 @@ bool TextureBuffer::prepare(){
 			return FAILURE;
 		}
 
-		glTexBuffer(GL_TEXTURE_BUFFER, internalFormat, m_buffer->getGlID());
-		glBindTexture(GL_TEXTURE_BUFFER, 0);
-
-		m_prepared = true;
+		if(m_buffer){
+			glTexBuffer(GL_TEXTURE_BUFFER, internalFormat, m_buffer->getGlID());
+			glBindTexture(GL_TEXTURE_BUFFER, 0);
+			m_prepared = true;
+		}
+		else{
+			std::cerr << "ERROR: Data buffer isn't connected" << std::endl;
+			return FAILURE;
+		}
+		
 	}
 
 	return SUCCESS;

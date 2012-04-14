@@ -69,6 +69,7 @@ void TextureUnit::lock(){
 	}
 	else{
 		m_index = m_freeTextureUnits.front();
+		m_freeTextureUnits.pop_front();
 		m_locked = true;
 	}
 }

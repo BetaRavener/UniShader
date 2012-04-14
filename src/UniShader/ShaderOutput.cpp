@@ -118,6 +118,9 @@ bool ShaderOutput::isInterleaved(){
 }
 
 void ShaderOutput::setUp(){
+	if(m_varyings.size() == 0)
+		return;
+
 	ensureGlewInit();
 	clearGLErrors();
 
@@ -130,6 +133,9 @@ void ShaderOutput::setUp(){
 }
 
 bool ShaderOutput::prepare(unsigned int primitiveCount){
+	if(m_varyings.size() == 0)
+		return SUCCESS;
+
 	if(m_program.getLinkStatus() != ShaderProgram::LinkStatus::SUCCESSFUL_LINK){
 		std::cerr << "ERROR: Shader program is not linked" << std::endl;
 		return FAILURE;
@@ -163,6 +169,9 @@ bool ShaderOutput::prepare(unsigned int primitiveCount){
 }
 
 void ShaderOutput::activate(PrimitiveType primitiveType){
+	if(m_varyings.size() == 0)
+		return;
+
 	if(!m_active){
 		ensureGlewInit();
 		clearGLErrors();
