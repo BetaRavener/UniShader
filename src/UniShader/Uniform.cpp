@@ -70,7 +70,7 @@ bool Uniform::isMatrixTransposed(){
 
 void Uniform::clearSource(){
 	if(m_plainData){
-		delete m_plainData;
+		delete[] m_plainData;
 		m_plainData = 0;
 		m_dataByteSize = 0;
 	}
@@ -146,9 +146,19 @@ bool Uniform::prepare(){
 		GLenum type = 0;
 		GLchar* name = new GLchar[charSize];
 		name[charSize-1] = '\0';
-		glGetActiveUniform(m_program.getGlID(), m_location, charSize, &length, &size, &type, name); 
 
-		delete name; name = 0;
+		GLint uniformCount;
+		glGetProgramiv(m_program.getGlID(),GL_ACTIVE_UNIFORMS, &uniformCount);
+		for(int i = 0; i < uniformCount; i++){
+			glGetActiveUniform(m_program.getGlID(), i, charSize, &length, &size, &type, name);
+			if(length == m_name.size()){
+				//if names match break search
+				if(memcmp(name,m_name.c_str(),length) == 0)
+					break;
+			}
+		}
+
+		delete[] name; name = 0;
 
 		if(!TypeResolver::resolve(type, m_type))
 			return FAILURE;

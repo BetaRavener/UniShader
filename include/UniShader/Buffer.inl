@@ -76,7 +76,7 @@ bool Buffer<T>::getDataCopy(std::vector<T>& vec) const{
 	try{
 		vec.resize(tempSize);
 	}
-	catch(std::bad_alloc& exc){
+	catch(...){
 		std::cerr << "ERROR: Failed to allocate memory for data" << std::endl;
 		mappedPtr = 0;
 		vec.clear();
@@ -91,9 +91,9 @@ bool Buffer<T>::getDataCopy(std::vector<T>& vec) const{
 }
 
 template <typename T> 
-bool Buffer<T>::getDataCopy(T* arr, unsigned int& size) const{
+bool Buffer<T>::getDataCopy(T*& arr, unsigned int& size) const{
 	unsigned int tempSize = m_byteSize/sizeof(T);
-
+	
 	if(arr != 0){
 		std::cerr << "ERROR: Passed pointer must be NULL" << std::endl;
 		return FAILURE;
@@ -108,7 +108,7 @@ bool Buffer<T>::getDataCopy(T* arr, unsigned int& size) const{
 	try{
 		arr = new T[tempSize];
 	}
-	catch(std::bad_alloc& exc){
+	catch(...){
 		std::cerr << "ERROR: Failed to allocate memory for data" << std::endl;
 		mappedPtr = 0;
 		size = 0;

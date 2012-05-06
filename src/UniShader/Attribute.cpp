@@ -133,9 +133,19 @@ bool Attribute::prepare(){
 		GLenum type = 0;
 		GLchar* name = new GLchar[charSize];
 		name[charSize-1] = '\0';
-		glGetActiveAttrib(m_program.getGlID(), m_location, charSize, &length, &size, &type, name); 
 
-		delete name; name = 0;
+		GLint attribCount;
+		glGetProgramiv(m_program.getGlID(), GL_ACTIVE_ATTRIBUTES, &attribCount);
+		for(int i = 0; i < attribCount; i++){
+			glGetActiveAttrib(m_program.getGlID(), m_location, charSize, &length, &size, &type, name); 
+			if(length == m_name.size()){
+				//if names match break search
+				if(memcmp(name,m_name.c_str(),length) == 0)
+					break;
+			}
+		}
+
+		delete[] name; name = 0;
 
 		if(!TypeResolver::resolve(type, m_type))
 			return FAILURE;

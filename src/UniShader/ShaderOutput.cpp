@@ -84,7 +84,7 @@ void ShaderOutput::removeVarying(std::string name){
 		if((*it)->getName() == name){
 			m_varyings.erase(it);
 
-			delete (*(m_names.begin()+i));
+			delete[] (*(m_names.begin()+i));
 			(*(m_names.begin()+i)) = 0;
 			m_names.erase(m_names.begin()+i);
 
@@ -118,6 +118,8 @@ bool ShaderOutput::isInterleaved(){
 }
 
 void ShaderOutput::setUp(){
+	m_prepared = false;
+
 	if(m_varyings.size() == 0)
 		return;
 

@@ -79,9 +79,19 @@ bool Varying::prepare(unsigned int index, unsigned int primitiveCount, size_t* u
 		GLenum type = 0;
 		GLchar* name = new GLchar[charSize];
 		name[charSize-1] = '\0';
-		glGetTransformFeedbackVarying(m_program.getGlID(), index, charSize+1, &length, &size, &type, name);
 
-		delete name; name = 0;
+		GLint varyingCount;
+		glGetProgramiv(m_program.getGlID(), GL_TRANSFORM_FEEDBACK_VARYINGS, &varyingCount);
+		for(int i = 0; i < varyingCount; i++){
+			glGetTransformFeedbackVarying(m_program.getGlID(), index, charSize+1, &length, &size, &type, name);
+			if(length == m_name.size()){
+				//if names match break search
+				if(memcmp(name, m_name.c_str(), length) == 0)
+					break;
+			}
+		}
+
+		delete[] name; name = 0;
 
 		if(length == 0){
 			std::cerr << "ERROR: Varying doesn't exist in program" << std::endl;

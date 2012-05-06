@@ -206,7 +206,7 @@ public:
 		\param size Size of array in elements.
 		\return True if data were copied successfully.
 	*/
-	bool getDataCopy(T* arr, unsigned int& size) const;
+	bool getDataCopy(T*& arr, unsigned int& size) const;
 
 	//! Get string.
 	/*! 
