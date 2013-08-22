@@ -1,7 +1,6 @@
-
                             UniShader library
              Interface for GPGPU and working with shader programs
-                          (c) Ivan Sevcik, 2012
+                          (c) Ivan Sevcik, 2013
                 zlib/libpng license (see LICENSE for details)
 
 IMPORTANT: This library is under heavy development and is not guaranteed to run 
