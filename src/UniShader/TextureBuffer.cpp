@@ -1,6 +1,6 @@
 /*
 * UniShader - Interface for GPGPU and working with shader programs
-* Copyright (c) 2011-2012 Ivan Sevcik - ivan-sevcik@hotmail.com
+* Copyright (c) 2011-2013 Ivan Sevcik - ivan-sevcik@hotmail.com
 *
 * This software is provided 'as-is', without any express or
 * implied warranty. In no event will the authors be held
@@ -84,12 +84,14 @@ TextureBuffer::Ptr TextureBuffer::create(){
 
 void TextureBuffer::connectBuffer(BufferBase::Ptr buffer, unsigned char componentsNumber, DataType dataType){
 	m_buffer = buffer;
+	m_buffer->subscribeReceiver(signalPtr);
 	m_componentsNumber = componentsNumber;
 	m_dataType = dataType;
 	m_prepared = false;
 }
 
 void TextureBuffer::disconnectBuffer(){
+	m_buffer->unsubscribeReceiver(signalPtr);
 	m_buffer = 0;
 	m_componentsNumber = 0;
 	m_dataType = DataType::NONE;
@@ -307,4 +309,16 @@ void TextureBuffer::deactivate(){
 			m_unit.release();
 		}
 	}
+}
+
+bool TextureBuffer::handleSignal(unsigned int signalID, const ObjectBase* callerPtr)
+{
+	if(callerPtr->getClassName() == "us::Buffer"){
+		switch(signalID){
+		case BufferBase::SignalID::CHANGED:
+			m_prepared = false;
+			return SUCCESS;
+		}
+	}
+	return FAILURE;
 }

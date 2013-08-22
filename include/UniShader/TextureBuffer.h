@@ -1,6 +1,6 @@
 /*
 * UniShader - Interface for GPGPU and working with shader programs
-* Copyright (c) 2011-2012 Ivan Sevcik - ivan-sevcik@hotmail.com
+* Copyright (c) 2011-2013 Ivan Sevcik - ivan-sevcik@hotmail.com
 *
 * This software is provided 'as-is', without any express or
 * implied warranty. In no event will the authors be held
@@ -55,7 +55,7 @@ template <typename T> class Buffer;
 	In GLSL code it is associated with samplerBuffer uniform.
 */
 
-class UniShader_API TextureBuffer : public SignalSender, public ObjectBase{
+class UniShader_API TextureBuffer : public SignalReceiver, public ObjectBase{
 private:
 	TextureBuffer();
 public:
@@ -163,6 +163,14 @@ public:
 		Texture unit is released only if all Activate() calls were matched by Deactivate().
 	*/
 	void deactivate();
+
+	//! Handle incoming signal.
+	/*!
+		\param signalID Signal identifier.
+		\param callerPtr Pointer to object sending signal.
+		\return True if handled.
+	*/
+	virtual bool handleSignal(unsigned int signalID, const ObjectBase* callerPtr);
 private:
 	TextureUnit m_unit;
 	std::shared_ptr<BufferBase> m_buffer;

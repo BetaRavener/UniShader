@@ -1,6 +1,6 @@
 /*
 * UniShader - Interface for GPGPU and working with shader programs
-* Copyright (c) 2011-2012 Ivan Sevcik - ivan-sevcik@hotmail.com
+* Copyright (c) 2011-2013 Ivan Sevcik - ivan-sevcik@hotmail.com
 *
 * This software is provided 'as-is', without any express or
 * implied warranty. In no event will the authors be held
@@ -170,6 +170,8 @@ bool BufferBase::setPlainData(const void* data, size_t size){
 	glBindBuffer(GL_ARRAY_BUFFER, m_bufferID);
 	glBufferData(GL_ARRAY_BUFFER, size, data, accessMode);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	sendSignal(SignalID::CHANGED, this);
 
 	if(printGLError()){
 		m_byteSize = 0;

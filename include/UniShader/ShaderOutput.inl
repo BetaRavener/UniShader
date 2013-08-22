@@ -1,6 +1,6 @@
 /*
 * UniShader - Interface for GPGPU and working with shader programs
-* Copyright (c) 2011-2012 Ivan Sevcik - ivan-sevcik@hotmail.com
+* Copyright (c) 2011-2013 Ivan Sevcik - ivan-sevcik@hotmail.com
 *
 * This software is provided 'as-is', without any express or
 * implied warranty. In no event will the authors be held

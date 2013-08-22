@@ -1,6 +1,6 @@
 /*
 * UniShader - Interface for GPGPU and working with shader programs
-* Copyright (c) 2011-2012 Ivan Sevcik - ivan-sevcik@hotmail.com
+* Copyright (c) 2011-2013 Ivan Sevcik - ivan-sevcik@hotmail.com
 *
 * This software is provided 'as-is', without any express or
 * implied warranty. In no event will the authors be held
@@ -63,18 +63,38 @@ public:
 	*/
 	void connectProgram(std::shared_ptr<ShaderProgram>& program);
 
+	//! Gets currently used program.
+	/*!
+		\return Program used by UniShader.
+	*/
+	std::shared_ptr<ShaderProgram> program();
+
 	//! Disconnect program.
 	void disconnectProgram();
 
 	//! Render.
 	/*!
-		Render with OpenGL using ShaderProgram.
+		Render array with OpenGL glDrawArrays command using ShaderProgram.
 		\param primitiveType Primitive type that will be rendered.
 		\param primitiveCount Number of primitives that will be rendered.
 		\param offset Global offset for all inputs.
+		\param record If true, shader output will be recorded and stored
 		\param wait If true, function won't return until all OpenGL commands haven't been processed.
 	*/
-	void render(PrimitiveType primitiveType, unsigned int primitiveCount, unsigned int offset = 0, bool wait = false);
+	void render(PrimitiveType primitiveType, unsigned int primitiveCount, unsigned int offset = 0, bool record = true, bool wait = false);
+
+	//! Render elements.
+	/*!
+		Render elements with OpenGL glDrawRangeElements command using ShaderProgram.
+		\param elementsBuffer Buffer of indices to be rendered.
+		\param primitiveType Primitive type that will be rendered.
+		\param primitiveCount Number of primitives that will be rendered.
+		\param offset Global offset for all inputs.
+		\param record If true, shader output will be recorded and stored
+		\param wait If true, function won't return until all OpenGL commands haven't been processed.
+	*/
+	void renderElements(Buffer<unsigned int>::Ptr elementsBuffer, PrimitiveType primitiveType, unsigned int primitiveCount, unsigned int offset = 0, bool record = true, bool wait = false);
+
 private:
 	ShaderProgram::Ptr m_program;
 };

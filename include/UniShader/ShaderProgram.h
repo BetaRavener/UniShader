@@ -1,6 +1,6 @@
 /*
 * UniShader - Interface for GPGPU and working with shader programs
-* Copyright (c) 2011-2012 Ivan Sevcik - ivan-sevcik@hotmail.com
+* Copyright (c) 2011-2013 Ivan Sevcik - ivan-sevcik@hotmail.com
 *
 * This software is provided 'as-is', without any express or
 * implied warranty. In no event will the authors be held
@@ -147,11 +147,24 @@ public:
 	*/
 	LinkStatus getLinkStatus() const;
 
-	//! Activate.
+	//! Ensure linkage after performing changes to program 
+	/*!
+		\return True if resulting link status is LinkStatus::SUCCESSFUL_LINK
+	*/
+	bool ensureLink();
+
+	//! Activate without recording.
 	/*! 
 		Activate program by modifying OpenGL context. Also prepare underlying classes for use.
-		\param primitiveType Primitive type that will be rendered.
-		\param primitiveCount Number of primitives that will be rendered.
+		\return True if program was activated successfully.
+	*/
+	bool activate();
+
+	//! Activate with recording.
+	/*! 
+		Activate program by modifying OpenGL context. Also prepare underlying classes for use.
+		\param primitiveType Primitive type that will be recorded.
+		\param primitiveCount Number of primitives that will be recorded.
 		\return True if program was activated successfully.
 	*/
 	bool activate(PrimitiveType primitiveType, unsigned int primitiveCount);
@@ -177,7 +190,6 @@ public:
 	*/
 	virtual bool handleSignal(unsigned int signalID, const ObjectBase* callerPtr);
 private:
-	bool ensureLink();
 	bool link();
 	int printProgramInfoLog() const;
    

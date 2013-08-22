@@ -1,6 +1,6 @@
 /*
 * UniShader - Interface for GPGPU and working with shader programs
-* Copyright (c) 2011-2012 Ivan Sevcik - ivan-sevcik@hotmail.com
+* Copyright (c) 2011-2013 Ivan Sevcik - ivan-sevcik@hotmail.com
 *
 * This software is provided 'as-is', without any express or
 * implied warranty. In no event will the authors be held
@@ -95,29 +95,60 @@ public:
 
 	//! Set source of data.
 	/*!
-		\param arr Array with data.
-		\param size Size of array in elements.
+		\param val Value to be used as data.
 	*/
-	void setSource(float* arr, unsigned int size);
+	void setSource(float val);
+
+	//! Set source of data.
+	/*!
+		\param val Value to be used as data.
+	*/
+	void setSource(int val);
+
+	//! Set source of data.
+	/*!
+		\param val Value to be used as data.
+	*/
+	void setSource(unsigned int val);
 
 	//! Set source of data.
 	/*!
 		\param arr Array with data.
 		\param size Size of array in elements.
 	*/
-	void setSource(int* arr, unsigned int size);
+	void setSource(const float* arr, unsigned int size);
+
+	//! Set source of data.
+	/*!
+		\param arr Array with data.
+		\param size Size of array in elements.
+	*/
+	void setSource(const int* arr, unsigned int size);
+
+	//! Set source of data.
+	/*!
+		\param arr Array with data.
+		\param size Size of array in elements.
+	*/
+	void setSource(const unsigned int* arr, unsigned int size);
 
 	//! Set source of data.
 	/*!
 		\param vec Vector with data.
 	*/
-	void setSource(std::vector<float> vec);
+	void setSource(const std::vector<float>& vec);
 
 	//! Set source of data.
 	/*!
 		\param vec Vector with data.
 	*/
-	void setSource(std::vector<int> vec);
+	void setSource(const std::vector<int>& vec);
+
+	//! Set source of data.
+	/*!
+		\param vec Vector with data.
+	*/
+	void setSource(const std::vector<unsigned int>& vec);
 
 	//! Set source of data.
 	/*!

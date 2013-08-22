@@ -1,6 +1,6 @@
 /*
 * UniShader - Interface for GPGPU and working with shader programs
-* Copyright (c) 2011-2012 Ivan Sevcik - ivan-sevcik@hotmail.com
+* Copyright (c) 2011-2013 Ivan Sevcik - ivan-sevcik@hotmail.com
 *
 * This software is provided 'as-is', without any express or
 * implied warranty. In no event will the authors be held
@@ -80,7 +80,31 @@ void Uniform::clearSource(){
 	m_prepared = false;
 }
 
-void Uniform::setSource(float* arr, unsigned int size){
+void Uniform::setSource(float val){
+	clearSource();
+	m_dataByteSize = sizeof(float);
+	m_plainData = (char*)new float[1];
+	memcpy(m_plainData, &val, m_dataByteSize);
+	m_prepared = false;
+}
+
+void Uniform::setSource(int val){
+	clearSource();
+	m_dataByteSize = sizeof(int);
+	m_plainData = (char*)new int[1];
+	memcpy(m_plainData, &val, m_dataByteSize);
+	m_prepared = false;
+}
+
+void Uniform::setSource(unsigned int val){
+	clearSource();
+	m_dataByteSize = sizeof(unsigned int);
+	m_plainData = (char*)new unsigned int[1];
+	memcpy(m_plainData, &val, m_dataByteSize);
+	m_prepared = false;
+}
+
+void Uniform::setSource(const float* arr, unsigned int size){
 	clearSource();
 	m_dataByteSize = size*sizeof(float);
 	m_plainData = (char*)new float[size];
@@ -88,7 +112,7 @@ void Uniform::setSource(float* arr, unsigned int size){
 	m_prepared = false;
 }
 
-void Uniform::setSource(int* arr, unsigned int size){
+void Uniform::setSource(const int* arr, unsigned int size){
 	clearSource();
 	m_dataByteSize = size*sizeof(int);
 	m_plainData = (char*)new int[size];
@@ -96,7 +120,15 @@ void Uniform::setSource(int* arr, unsigned int size){
 	m_prepared = false;
 }
 
-void Uniform::setSource(std::vector<float> vec){
+void Uniform::setSource(const unsigned int* arr, unsigned int size){
+	clearSource();
+	m_dataByteSize = size*sizeof(unsigned int);
+	m_plainData = (char*)new unsigned int[size];
+	memcpy(m_plainData, &arr[0], m_dataByteSize);
+	m_prepared = false;
+}
+
+void Uniform::setSource(const std::vector<float>& vec){
 	clearSource();
 	unsigned int size = vec.size();
 	m_dataByteSize = size*sizeof(float);
@@ -105,11 +137,20 @@ void Uniform::setSource(std::vector<float> vec){
 	m_prepared = false;
 }
 
-void Uniform::setSource(std::vector<int> vec){
+void Uniform::setSource(const std::vector<int>& vec){
 	clearSource();
 	unsigned int size = vec.size();
 	m_dataByteSize = size*sizeof(int);
 	m_plainData = (char*)new int[size];
+	memcpy(m_plainData, &vec[0], m_dataByteSize);
+	m_prepared = false;
+}
+
+void Uniform::setSource(const std::vector<unsigned int>& vec){
+	clearSource();
+	unsigned int size = vec.size();
+	m_dataByteSize = size*sizeof(unsigned int);
+	m_plainData = (char*)new unsigned int[size];
 	memcpy(m_plainData, &vec[0], m_dataByteSize);
 	m_prepared = false;
 }

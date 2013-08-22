@@ -1,6 +1,6 @@
 /*
 * UniShader - Interface for GPGPU and working with shader programs
-* Copyright (c) 2011-2012 Ivan Sevcik - ivan-sevcik@hotmail.com
+* Copyright (c) 2011-2013 Ivan Sevcik - ivan-sevcik@hotmail.com
 *
 * This software is provided 'as-is', without any express or
 * implied warranty. In no event will the authors be held
@@ -104,6 +104,48 @@ ShaderProgram::LinkStatus ShaderProgram::getLinkStatus() const{
 	return m_linkStatus;
 }
 
+bool ShaderProgram::ensureLink(){
+	if(m_linkStatus == LinkStatus::PENDING_LINK){
+		if(link()){
+			m_linkStatus = LinkStatus::SUCCESSFUL_LINK;
+			return SUCCESS;
+		}
+		else{
+			m_linkStatus = LinkStatus::FAILED_LINK;
+			return FAILURE;
+		}
+	}
+	else{
+		if(m_linkStatus == LinkStatus::SUCCESSFUL_LINK)
+			return SUCCESS;
+		else
+			return FAILURE;
+	}
+}
+
+bool ShaderProgram::activate(){
+	if(!m_active){
+		ensureGlewInit();
+		clearGLErrors();
+
+		ensureLink();
+	
+		m_input->prepare();
+
+		glUseProgram(m_programObjectID);
+		if(printGLError()){
+			glUseProgram(0);
+			return FAILURE;
+		}
+
+		m_input->activate();
+
+		m_active = true;
+		return SUCCESS;
+	}
+	return FAILURE;
+}
+
 bool ShaderProgram::activate(PrimitiveType primitiveType, unsigned int primitiveCount){
 	if(!m_active){
 		ensureGlewInit();
@@ -166,25 +208,6 @@ bool ShaderProgram::handleSignal(unsigned int signalID, const ObjectBase* caller
 		}
 	}
 	return FAILURE;
-}
-
-bool ShaderProgram::ensureLink(){
-	if(m_linkStatus == LinkStatus::PENDING_LINK){
-		if(link()){
-			m_linkStatus = LinkStatus::SUCCESSFUL_LINK;
-			return SUCCESS;
-		}
-		else{
-			m_linkStatus = LinkStatus::FAILED_LINK;
-			return FAILURE;
-		}
-	}
-	else{
-		if(m_linkStatus == LinkStatus::SUCCESSFUL_LINK)
-			return SUCCESS;
-		else
-			return FAILURE;
-	}
 }
 
 bool ShaderProgram::link(){

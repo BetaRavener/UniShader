@@ -1,6 +1,6 @@
 /*
 * UniShader - Interface for GPGPU and working with shader programs
-* Copyright (c) 2011-2012 Ivan Sevcik - ivan-sevcik@hotmail.com
+* Copyright (c) 2011-2013 Ivan Sevcik - ivan-sevcik@hotmail.com
 *
 * This software is provided 'as-is', without any express or
 * implied warranty. In no event will the authors be held
@@ -49,11 +49,16 @@ void UniShader::connectProgram(ShaderProgram::Ptr& program){
 	m_program = program;
 }
 
+ShaderProgram::Ptr UniShader::program()
+{
+	return m_program;
+}
+
 void UniShader::disconnectProgram(){
 	m_program = 0;
 }
 
-void UniShader::render(PrimitiveType primitiveType, unsigned int primitiveCount, unsigned int offset, bool wait){
+void UniShader::render(PrimitiveType primitiveType, unsigned int primitiveCount, unsigned int offset, bool record, bool wait){
 	if(!m_program){
 		std::cerr << "ERROR: No shader program connected." << std::endl;
 		return;
@@ -84,8 +89,59 @@ void UniShader::render(PrimitiveType primitiveType, unsigned int primitiveCount,
 		return;
 	}
 
-	m_program->activate(primitiveType, primitiveCount);
+	if(record)
+		m_program->activate(primitiveType, primitiveCount);
+	else
+		m_program->activate();
+
 	glDrawArrays(mode, offset, primitiveCount);
+
+	if(wait)
+		glFinish();
+	printGLError();
+	m_program->deactivate();
+}
+
+void UniShader::renderElements(Buffer<unsigned int>::Ptr elementsBuffer, PrimitiveType primitiveType, unsigned int primitiveCount, unsigned int offset, bool record, bool wait){
+	if(!m_program){
+		std::cerr << "ERROR: No shader program connected." << std::endl;
+		return;
+	}
+	ensureGlewInit();
+	clearGLErrors();
+
+	GLenum mode;
+	
+	switch(primitiveType){
+	case PrimitiveType::POINTS:
+		mode = GL_POINTS;
+		break;
+	case PrimitiveType::LINES:
+		mode = GL_LINES;
+		break;
+	case PrimitiveType::LINE_STRIP:
+		mode = GL_LINE_STRIP;
+		break;
+	case PrimitiveType::TRIANGLES:
+		mode = GL_TRIANGLES;
+		break;
+	case PrimitiveType::TRIANGLE_STRIP:
+		mode = GL_TRIANGLE_STRIP;
+		break;
+	default:
+		std::cerr << "ERROR: Invalid primitive type" << std::endl;
+		return;
+	}
+
+	if(record)
+		m_program->activate(primitiveType, primitiveCount);
+	else
+		m_program->activate();
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementsBuffer->getGlID());
+	glDrawRangeElements(mode, offset, offset + primitiveCount, primitiveCount, GL_UNSIGNED_INT, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 	if(wait)
 		glFinish();
 	printGLError();
