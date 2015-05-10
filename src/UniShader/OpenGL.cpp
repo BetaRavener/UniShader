@@ -26,18 +26,24 @@
 #include <UniShader/OpenGL.h>
 #include <iostream>
 
+#ifdef GLEW_MX
+static GLEWContext* currentGlewContext = nullptr;
+#endif
+
 std::string& getGLExtensions(){
 	static std::string ext = (char*)glGetString(GL_EXTENSIONS);
 	return ext;
 }
 
-void ensureGlewInit(){
-    static bool initialized = false;
-    if (!initialized){
-        GLenum status = glewInit();
-        if (status == GLEW_OK)
-            initialized = true;
-        else
-           std::cerr << "Failed to initialize GLEW, " << glewGetErrorString(status) << std::endl;
-    }
+#ifdef GLEW_MX
+GLEWContext* glewGetContext()
+{
+    return currentGlewContext;
 }
+
+void setCurrentGLEWContext(GLEWContext* context)
+{
+    currentGlewContext = context;
+}
+
+#endif

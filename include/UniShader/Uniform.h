@@ -41,6 +41,7 @@ UNISHADER_BEGIN
 	
 class ShaderProgram;
 class TextureBuffer;
+class Texture;
 
 //! Uniform class.
 /*!
@@ -150,6 +151,12 @@ public:
 	*/
 	void setSource(const std::vector<unsigned int>& vec);
 
+    //! Set source of data.
+    /*!
+        \param texture Texture with data.
+    */
+    void setSource(std::shared_ptr<Texture>& texture);
+
 	//! Set source of data.
 	/*!
 		\param textureBuffer Texture buffer with data.
@@ -194,6 +201,7 @@ private:
 	GLSLType m_type;
 	std::string m_name;
 
+    std::shared_ptr<Texture> m_texture;
 	std::shared_ptr<TextureBuffer> m_textureBuffer;
 	char* m_plainData;
 	size_t m_dataByteSize;

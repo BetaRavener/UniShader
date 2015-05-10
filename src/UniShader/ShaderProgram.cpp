@@ -48,8 +48,7 @@ const std::string& ShaderProgram::getClassName() const{
 	return name;
 }
 
-ShaderProgram::~ShaderProgram(){
-	ensureGlewInit();
+ShaderProgram::~ShaderProgram(){;
 	clearGLErrors();
 
 	glDeleteProgram(m_programObjectID);
@@ -57,7 +56,6 @@ ShaderProgram::~ShaderProgram(){
 }
 
 ShaderProgram::Ptr ShaderProgram::create(){
-	ensureGlewInit();
 	clearGLErrors();
 
 	Ptr ptr ( new ShaderProgram );
@@ -125,7 +123,6 @@ bool ShaderProgram::ensureLink(){
 
 bool ShaderProgram::activate(){
 	if(!m_active){
-		ensureGlewInit();
 		clearGLErrors();
 
 		ensureLink();
@@ -148,7 +145,6 @@ bool ShaderProgram::activate(){
 
 bool ShaderProgram::activate(PrimitiveType primitiveType, unsigned int primitiveCount){
 	if(!m_active){
-		ensureGlewInit();
 		clearGLErrors();
 
 		ensureLink();
@@ -177,7 +173,6 @@ bool ShaderProgram::isActive(){
 
 bool ShaderProgram::deactivate(){
 	if(m_active){
-		ensureGlewInit();
 		clearGLErrors();
 
 		m_output->deactivate();
@@ -211,7 +206,6 @@ bool ShaderProgram::handleSignal(unsigned int signalID, const ObjectBase* caller
 }
 
 bool ShaderProgram::link(){
-	ensureGlewInit();
 	clearGLErrors();
 
 	//Recreate program object because
@@ -260,7 +254,6 @@ bool ShaderProgram::link(){
 }
 
 int ShaderProgram::printProgramInfoLog() const{
-	ensureGlewInit();
 	clearGLErrors();
 
     int infologLength = 0;

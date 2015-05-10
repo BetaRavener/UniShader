@@ -32,7 +32,6 @@
 #include <string>
 
 std::string& getGLExtensions();
-void ensureGlewInit();
 
 inline void clearGLErrors(){
 	while(glGetError() != GL_NO_ERROR){
@@ -48,6 +47,11 @@ inline bool printGLError(std::string file, unsigned int line){
 	}
 	return error;
 }
+
+#ifdef GLEW_MX
+GLEWContext* glewGetContext();
+void setCurrentGLEWContext(GLEWContext* context);
+#endif
 
 #define printGLError() printGLError(__FILE__, __LINE__)
 

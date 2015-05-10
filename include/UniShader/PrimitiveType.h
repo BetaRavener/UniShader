@@ -38,8 +38,9 @@ public:
 				POINTS, //!< Points ( N primitives == N elements ).
 				LINES, //!< Lines ( N primitives == N*2 elements ).
 				LINE_STRIP, //!< Line strip ( N primitives == N+1 elements ).
+                LINE_STRIP_ADJACENCY, //!< Line strip ( N primitives == N+3 elements ).
 				TRIANGLES, //!< Triangles ( N primitives == N*3 elements ).
-				TRIANGLE_STRIP //!< Triangle strip ( N primitives == N+2 elements ).
+                TRIANGLE_STRIP, //!< Triangle strip ( N primitives == N+2 elements ).
 	};
 private:
 	myEnum m_en;

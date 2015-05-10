@@ -123,7 +123,6 @@ void ShaderOutput::setUp(){
 	if(m_varyings.size() == 0)
 		return;
 
-	ensureGlewInit();
 	clearGLErrors();
 
 	if(m_interleaved)
@@ -175,7 +174,6 @@ void ShaderOutput::activate(PrimitiveType primitiveType){
 		return;
 
 	if(!m_active){
-		ensureGlewInit();
 		clearGLErrors();
 
 		m_primitivesProcessed = 0;
@@ -227,7 +225,6 @@ bool ShaderOutput::isActive(){
 
 void ShaderOutput::deactivate(){
 	if(m_active){
-		ensureGlewInit();
 		clearGLErrors();
 
 		glEndTransformFeedback();

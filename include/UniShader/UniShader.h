@@ -38,11 +38,16 @@
 #include <UniShader/Attribute.h>
 #include <UniShader/Uniform.h>
 #include <UniShader/Varying.h>
+#include <UniShader/Texture.h>
 #include <UniShader/TextureBuffer.h>
 #include <UniShader/PrimitiveType.h>
 
 #include <memory>
 #include <string>
+
+#ifdef GLEW_MX
+struct GLEWContextStruct;
+#endif
 
 UNISHADER_BEGIN
 
@@ -95,6 +100,9 @@ public:
 	*/
 	void renderElements(Buffer<unsigned int>::Ptr elementsBuffer, PrimitiveType primitiveType, unsigned int primitiveCount, unsigned int offset = 0, bool record = true, bool wait = false);
 
+#ifdef GLEW_MX
+    static void setGLEWContext(GLEWContextStruct* context);
+#endif
 private:
 	ShaderProgram::Ptr m_program;
 };

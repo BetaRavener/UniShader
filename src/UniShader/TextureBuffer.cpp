@@ -38,7 +38,6 @@ m_texture(0),
 m_activeCount(0),
 m_componentsNumber(0),
 m_prepared(false){
-	ensureGlewInit();
 	clearGLErrors();
 
 	glGenTextures(1, &m_texture);
@@ -57,7 +56,6 @@ TextureBuffer::~TextureBuffer(){
 }
 
 TextureBuffer::Ptr TextureBuffer::create(){
-	ensureGlewInit();
 	clearGLErrors();
 
 	Ptr ptr(new TextureBuffer);
@@ -126,7 +124,6 @@ void TextureBuffer::setDataType(DataType dataType){
 }
 
 bool TextureBuffer::prepare(){
-	ensureGlewInit();
 	clearGLErrors();
 
 	if(!m_prepared){
@@ -283,7 +280,6 @@ bool TextureBuffer::prepare(){
 }
 
 void TextureBuffer::activate(){
-	ensureGlewInit();
 	clearGLErrors();
 
 	if(!prepare())
@@ -298,7 +294,6 @@ void TextureBuffer::activate(){
 }
 
 void TextureBuffer::deactivate(){
-	ensureGlewInit();
 	clearGLErrors();
 
 	if(m_activeCount != 0){

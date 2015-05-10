@@ -37,7 +37,6 @@ TextureUnit::TextureUnit():
 m_index(-1),
 m_locked(0){
 	if(!m_initialized){
-		ensureGlewInit();
 		clearGLErrors();
 
 		GLint max, mctiu;
@@ -76,7 +75,6 @@ void TextureUnit::lock(){
 
 bool TextureUnit::makeActive(){
 	if(m_locked){
-		ensureGlewInit();
 		clearGLErrors();
 
 		glActiveTexture(GL_TEXTURE0+m_index);

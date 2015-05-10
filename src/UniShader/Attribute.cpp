@@ -28,6 +28,7 @@
 #include <UniShader/OpenGL.h>
 #include <UniShader/TypeResolver.h>
 #include <UniShader/Buffer.h>
+#include <string.h>
 
 using UNISHADER_NAMESPACE;
 
@@ -57,7 +58,7 @@ void Attribute::connectBuffer(BufferBase::Ptr buffer, size_t offset, size_t stri
 	m_buffer = buffer;
 	m_offset = offset;
 	m_stride = stride;
-	m_prepared = false;
+    m_prepared = false;
 	sendSignal(SignalID::CHANGED, this);
 }
 
@@ -111,7 +112,6 @@ void Attribute::setReadingMode(ReadingMode readingMode){
 }
 
 bool Attribute::prepare(){
-	ensureGlewInit();
 	clearGLErrors();
 
 	if(m_program.getLinkStatus() != ShaderProgram::LinkStatus::SUCCESSFUL_LINK){
@@ -137,7 +137,7 @@ bool Attribute::prepare(){
 		GLint attribCount;
 		glGetProgramiv(m_program.getGlID(), GL_ACTIVE_ATTRIBUTES, &attribCount);
 		for(int i = 0; i < attribCount; i++){
-			glGetActiveAttrib(m_program.getGlID(), m_location, charSize, &length, &size, &type, name); 
+            glGetActiveAttrib(m_program.getGlID(), i, charSize, &length, &size, &type, name);
 			if(length == m_name.size()){
 				//if names match break search
 				if(memcmp(name,m_name.c_str(),length) == 0)
@@ -157,7 +157,6 @@ bool Attribute::prepare(){
 }
 
 void Attribute::apply(){
-	ensureGlewInit();
 	clearGLErrors();
 
 	if(!m_buffer){
@@ -257,6 +256,6 @@ bool Attribute::handleSignal(unsigned int signalID, const ObjectBase* callerPtr)
 			m_prepared = false;
 			return SUCCESS;
 		}
-	}
+    }
 	return FAILURE;
 }

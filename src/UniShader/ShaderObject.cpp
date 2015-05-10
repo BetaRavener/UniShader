@@ -54,7 +54,6 @@ ShaderObject::Ptr ShaderObject::create(){
 }
 
 bool ShaderObject::loadFile(const std::string fileName, Type shaderType){
-	ensureGlewInit();
 	clearGLErrors();
 	m_compilationStatus = CompilationStatus::PENDING_COMPILATION;
 	if(glIsShader(m_shaderObjectID))
@@ -101,7 +100,7 @@ bool ShaderObject::loadFile(const std::string fileName, Type shaderType){
 		break;
 	case Type::GEOMETRY:
 		//Find out if geometry shader is supported
-		if(getGLExtensions().find("GL_EXT_geometry_shader4") == std::string::npos){
+        if(!glewIsSupported("GL_EXT_geometry_shader4")){
 			std::cerr << "ERROR: Geometry shader is not supported by graphics card" << std::endl;
 			m_type = Type::UNRECOGNIZED;
 			return FAILURE;
@@ -131,7 +130,6 @@ bool ShaderObject::loadFile(const std::string fileName, Type shaderType){
 }
 
 bool ShaderObject::loadCode(const std::string code, Type shaderType){
-	ensureGlewInit();
 	clearGLErrors();
 	m_compilationStatus = CompilationStatus::PENDING_COMPILATION;
 	if(glIsShader(m_shaderObjectID))
@@ -207,7 +205,6 @@ ShaderObject::CompilationStatus ShaderObject::getCompilationStatus() const{
 }
 
 bool ShaderObject::compile(){
-	ensureGlewInit();
 	clearGLErrors();
 
 	GLint compileStatus;
@@ -240,7 +237,6 @@ bool ShaderObject::compile(){
 }
 
 bool ShaderObject::printShaderInfoLog() const{
-	ensureGlewInit();
 	clearGLErrors();
 
     int infologLength = 0;
@@ -272,7 +268,7 @@ int ShaderObject::getShaderSize(const std::string &shaderName) const{
 
 	std::ifstream fin;
 	fin.open(shaderName.data(),std::ios::binary);
-	if(!fin.good())
+    if(!fin)
         return -1;
 	fin.seekg(0, std::ios::end);
 	count = (int)fin.tellg();
@@ -288,7 +284,7 @@ bool ShaderObject::readShaderSource(const std::string& fileName, std::string& sh
 
     // Open the file
 	fin.open(fileName.data(),std::ios::binary);
-    if(fin.bad()){
+    if(!fin){
 		std::cerr << "ERROR: Failed to open " << fileName << std::endl;
         return FAILURE;
 	}

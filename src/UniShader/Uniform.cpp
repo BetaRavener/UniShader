@@ -25,6 +25,7 @@
 
 #include <UniShader/Uniform.h>
 #include <UniShader/ShaderProgram.h>
+#include <UniShader/Texture.h>
 #include <UniShader/TextureBuffer.h>
 #include <UniShader/OpenGL.h>
 #include <UniShader/TypeResolver.h>
@@ -152,7 +153,14 @@ void Uniform::setSource(const std::vector<unsigned int>& vec){
 	m_dataByteSize = size*sizeof(unsigned int);
 	m_plainData = (char*)new unsigned int[size];
 	memcpy(m_plainData, &vec[0], m_dataByteSize);
-	m_prepared = false;
+    m_prepared = false;
+}
+
+void Uniform::setSource(Texture::Ptr& texture)
+{
+    clearSource();
+    m_texture = texture;
+    m_prepared = false;
 }
 
 void Uniform::setSource(TextureBuffer::Ptr& textureBuffer){
@@ -166,7 +174,6 @@ const GLSLType& Uniform::getGLSLType() const{
 }
 
 bool Uniform::prepare(){
-	ensureGlewInit();
 	clearGLErrors();
 
 	if(m_program.getLinkStatus() != ShaderProgram::LinkStatus::SUCCESSFUL_LINK){
@@ -212,14 +219,13 @@ bool Uniform::prepare(){
 }
 
 void Uniform::apply(){
-	ensureGlewInit();
 	clearGLErrors();
 
 	if(!prepare())
 		return;
 
 	//textures must be applied everytime because texturing unit may change
-	if(!m_applied || m_textureBuffer){
+    if(!m_applied || m_texture || m_textureBuffer){
 		//use correct version to set uniform
 		switch(m_type.getObjectType()){
 		case GLSLType::ObjectType::VALUE:
@@ -440,21 +446,65 @@ void Uniform::apply(){
 			break;
 
 		case GLSLType::ObjectType::SAMPLER:
-			if(!m_textureBuffer){
-				std::cerr << "ERROR: Uniform's source isn't texture buffer" << std::endl;
+            if(!m_texture && !m_textureBuffer){
+                std::cerr << "ERROR: Uniform's source must be texture or texture buffer" << std::endl;
 				return;
 			}
 			
-			switch(m_type.getSamplerType()){
-			case GLSLType::SamplerType::BUFFER:
-				//TODO: check sampler and buffer data types
-				m_textureBuffer->activate();
-				glUniform1i(m_location, m_textureBuffer->getTextureUnitIndex());
-				break;
-			default:
-				std::cerr << "ERROR: Invalid sampler type" << std::endl;
-				return;
-			}
+            switch(m_type.getSamplerType()){
+            case GLSLType::SamplerType::ONE_DIMENSIONAL:
+                if (m_texture)
+                {
+                    if (m_texture->getType() != Texture::TextureType::ONE_DIM)
+                    {
+                        std::cerr << "ERROR: Texture sampler and texture have different dimensions";
+                        return;
+                    }
+
+                    m_texture->activate();
+                    glUniform1i(m_location, m_texture->getTextureUnitIndex());
+                }
+                else
+                {
+                    std::cerr << "ERROR: Uniform is texture sampler but no texture bound";
+                    return;
+                }
+                break;
+            case GLSLType::SamplerType::TWO_DIMENSIONAL:
+                if (m_texture)
+                {
+                    if (m_texture->getType() != Texture::TextureType::TWO_DIM)
+                    {
+                        std::cerr << "ERROR: Texture sampler and texture have different dimensions";
+                        return;
+                    }
+
+                    m_texture->activate();
+                    glUniform1i(m_location, m_texture->getTextureUnitIndex());
+                }
+                else
+                {
+                    std::cerr << "ERROR: Uniform is texture sampler but no texture bound";
+                    return;
+                }
+                break;
+            case GLSLType::SamplerType::BUFFER:
+                if (m_textureBuffer)
+                {
+                    //TODO: check sampler and buffer data types
+                    m_textureBuffer->activate();
+                    glUniform1i(m_location, m_textureBuffer->getTextureUnitIndex());
+                }
+                else
+                {
+                    std::cerr << "ERROR: Uniform is buffer sampler but no buffer bound";
+                    return;
+                }
+                break;
+            default:
+                std::cerr << "ERROR: Invalid sampler type" << std::endl;
+                return;
+            }
 			break;
 
 		default:

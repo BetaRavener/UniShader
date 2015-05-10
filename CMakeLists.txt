@@ -22,7 +22,7 @@ find_package( GLEW REQUIRED )
 # Set some useful compile flags.
 if( CMAKE_COMPILER_IS_GNUCXX )
 	# Define usage of c0x
-	ADD_DEFINITIONS("-std=c++0x")
+	ADD_DEFINITIONS("-std=c++0x -DGLEW_MX")
 
 	if( NOT CMAKE_CXX_FLAGS )
 		set( CMAKE_CXX_FLAGS "-Wall -Wextra -Wshadow -Wconversion -Wno-long-long -pedantic" CACHE STRING "C++ compiler flags" FORCE )
@@ -69,6 +69,7 @@ set(
 	${INC_DIR}/UniShader/ShaderOutput.inl
 	${INC_DIR}/UniShader/ShaderProgram.h
 	${INC_DIR}/UniShader/Signal.h
+        ${INC_DIR}/UniShader/Texture.h
 	${INC_DIR}/UniShader/TextureBuffer.h
 	${INC_DIR}/UniShader/TextureUnit.h
 	${INC_DIR}/UniShader/TypeResolver.h
@@ -88,6 +89,7 @@ set(
 	${SRC_DIR}/UniShader/ShaderOutput.cpp
 	${SRC_DIR}/UniShader/ShaderProgram.cpp
 	${SRC_DIR}/UniShader/Signal.cpp
+        ${SRC_DIR}/UniShader/Texture.cpp
 	${SRC_DIR}/UniShader/TextureBuffer.cpp
 	${SRC_DIR}/UniShader/TextureUnit.cpp
 	${SRC_DIR}/UniShader/TypeResolver.cpp

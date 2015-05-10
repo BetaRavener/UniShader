@@ -36,7 +36,6 @@ m_byteSize(0),
 m_frequencyMode(FrequencyMode::STATIC),
 m_natureMode(NatureMode::DRAW),
 m_bufferID(0){
-	ensureGlewInit();
 	clearGLErrors();
 
 	glGenBuffers(1, &m_bufferID);
@@ -49,15 +48,13 @@ const std::string& BufferBase::getClassName() const{
 }
 
 BufferBase::~BufferBase(){
-	ensureGlewInit();
 	clearGLErrors();
 
 	glDeleteBuffers(1,&m_bufferID);
 	printGLError();
 }
 
-bool BufferBase::clear(){
-	ensureGlewInit();
+bool BufferBase::clear(){;
 	clearGLErrors();
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_bufferID);
@@ -88,7 +85,6 @@ void BufferBase::setNatureMode(NatureMode natureMode){
 }
 
 bool BufferBase::mapBuffer(void** mappedPtr) const{
-	ensureGlewInit();
 	clearGLErrors();
 
 	//map buffer from GPU memory to RAM
@@ -109,7 +105,6 @@ bool BufferBase::unmapBuffer() const{
 }
 
 bool BufferBase::setPlainData(const void* data, size_t size){
-	ensureGlewInit();
 	clearGLErrors();
 
 	GLenum accessMode = 0;

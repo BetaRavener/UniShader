@@ -30,6 +30,7 @@
 #include <UniShader/OpenGL.h>
 #include <UniShader/TypeResolver.h>
 #include <UniShader/InternalBuffer.h>
+#include <string.h>
 
 using UNISHADER_NAMESPACE;
 

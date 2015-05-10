@@ -63,7 +63,6 @@ void UniShader::render(PrimitiveType primitiveType, unsigned int primitiveCount,
 		std::cerr << "ERROR: No shader program connected." << std::endl;
 		return;
 	}
-	ensureGlewInit();
 	clearGLErrors();
 
 	GLenum mode;
@@ -78,6 +77,9 @@ void UniShader::render(PrimitiveType primitiveType, unsigned int primitiveCount,
 	case PrimitiveType::LINE_STRIP:
 		mode = GL_LINE_STRIP;
 		break;
+    case PrimitiveType::LINE_STRIP_ADJACENCY:
+        mode = GL_LINE_STRIP_ADJACENCY;
+        break;
 	case PrimitiveType::TRIANGLES:
 		mode = GL_TRIANGLES;
 		break;
@@ -107,7 +109,6 @@ void UniShader::renderElements(Buffer<unsigned int>::Ptr elementsBuffer, Primiti
 		std::cerr << "ERROR: No shader program connected." << std::endl;
 		return;
 	}
-	ensureGlewInit();
 	clearGLErrors();
 
 	GLenum mode;
@@ -122,6 +123,9 @@ void UniShader::renderElements(Buffer<unsigned int>::Ptr elementsBuffer, Primiti
 	case PrimitiveType::LINE_STRIP:
 		mode = GL_LINE_STRIP;
 		break;
+    case PrimitiveType::LINE_STRIP_ADJACENCY:
+        mode = GL_LINE_STRIP_ADJACENCY;
+        break;
 	case PrimitiveType::TRIANGLES:
 		mode = GL_TRIANGLES;
 		break;
@@ -147,3 +151,10 @@ void UniShader::renderElements(Buffer<unsigned int>::Ptr elementsBuffer, Primiti
 	printGLError();
 	m_program->deactivate();
 }
+
+#ifdef GLEW_MX
+void UniShader::setGLEWContext(GLEWContextStruct* context)
+{
+    setCurrentGLEWContext(context);
+}
+#endif

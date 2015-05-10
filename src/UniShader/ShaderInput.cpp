@@ -112,7 +112,6 @@ void ShaderInput::prepare(){
 	}
 
 	if(m_remakeVAO){
-		ensureGlewInit();
 		clearGLErrors();
 		glDeleteVertexArrays(1, &m_VAO);
 		glGenVertexArrays(1, &m_VAO);
@@ -129,7 +128,6 @@ void ShaderInput::prepare(){
 
 void ShaderInput::activate(){
 	if(!m_active){
-		ensureGlewInit();
 		clearGLErrors();
 
 		//apply uniforms to program
@@ -149,7 +147,6 @@ bool ShaderInput::isActive(){
 
 void ShaderInput::deactivate(){
 	if(m_active){
-		ensureGlewInit();
 		clearGLErrors();
 		glBindVertexArray(0);
 		for(std::deque< std::shared_ptr<Uniform> >::iterator it = m_uniforms.begin(); it != m_uniforms.end(); it++)
