@@ -59,7 +59,7 @@ bool ShaderObject::loadFile(const std::string fileName, Type shaderType){
 	if(glIsShader(m_shaderObjectID))
 		glDeleteShader(m_shaderObjectID);
 
-	unsigned int dotPos;
+        std::string::size_type dotPos;
 	std::string code, extension;
 
 	switch(shaderType){
@@ -311,7 +311,7 @@ bool ShaderObject::readShaderSource(const std::string& fileName, std::string& sh
 }
 
 bool ShaderObject::translateLiterals(std::string &shaderText){
-	unsigned int pos, end;
+        std::string::size_type pos, end;
 
 	//check for SwDouble switch
 	if((pos = shaderText.find("//#SwDouble")) != std::string::npos){
